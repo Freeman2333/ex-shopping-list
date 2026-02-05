@@ -1,22 +1,39 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { toast } from "react-toastify";
 import BottomSheet from "./ui/BottomSheet";
 import Input from "./ui/Input";
 import Icon from "../assets/icons.tsx";
 import { productSchema, type ProductFormData } from "../schemas/productSchema";
+import {
+  useGetProductQuery,
+  useUpdateProductMutation,
+} from "../redux/services/mainApi";
 
 interface ProductFormProps {
   isOpen: boolean;
   onClose: () => void;
+  productId?: number | null;
 }
 
-const ProductForm: React.FC<ProductFormProps> = ({ isOpen, onClose }) => {
+const ProductForm: React.FC<ProductFormProps> = ({
+  isOpen,
+  onClose,
+  productId,
+}) => {
+  const { data: product } = useGetProductQuery(productId!, {
+    skip: !productId,
+  });
+
+  const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
+
   const {
     control,
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<ProductFormData>({
     resolver: yupResolver(productSchema),
     defaultValues: {
@@ -26,11 +43,37 @@ const ProductForm: React.FC<ProductFormProps> = ({ isOpen, onClose }) => {
     },
   });
 
-  const onSubmitForm = (data: ProductFormData) => {
-    console.log({ data });
+  useEffect(() => {
+    if (product) {
+      setValue("name", product.name);
+      setValue("price", product.price);
+      setValue("description", product.description || "");
+    } else {
+      reset();
+    }
+  }, [product, isOpen, setValue, reset]);
 
-    // reset();
-    // onClose();
+  const onSubmitForm = async (data: ProductFormData) => {
+    try {
+      if (productId) {
+        await updateProduct({
+          id: productId,
+          ...data,
+        }).unwrap();
+
+        toast.success("Product updated successfully");
+      } else {
+        // Create new product (TODO: add createProduct mutation)
+        console.log("Creating new product:", data);
+        toast.success("Product created successfully");
+      }
+
+      reset();
+      onClose();
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast.error("Failed to save product. Please try again.");
+    }
   };
 
   const handleClose = () => {
@@ -92,9 +135,18 @@ const ProductForm: React.FC<ProductFormProps> = ({ isOpen, onClose }) => {
           <div className="flex justify-end">
             <button
               type="submit"
-              className="px-6 py-2 bg-white  text-orange-500 rounded-md font-medium hover:bg-orange-50 focus:outline-none transition-colors flex items-center justify-center"
+              disabled={isUpdating}
+              className={`px-6 py-2 rounded-md font-medium focus:outline-none transition-colors flex items-center justify-center ${
+                isUpdating
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  : "bg-white text-orange-500 hover:bg-orange-50"
+              }`}
             >
-              <Icon.Arrow />
+              {isUpdating ? (
+                <div className="w-5 h-5 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <Icon.Arrow />
+              )}
             </button>
           </div>
         </form>

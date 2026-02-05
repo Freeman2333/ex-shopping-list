@@ -7,6 +7,9 @@ import Icon from "../assets/icons.tsx";
 const Products: React.FC = () => {
   const { data: products = [], isLoading, error } = useGetProductsQuery();
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState<number | null>(
+    null,
+  );
 
   if (isLoading) {
     return (
@@ -30,7 +33,7 @@ const Products: React.FC = () => {
 
   return (
     <div className="min-h-screen py-8">
-      <div className="max-w-2xl mx-auto px-4">
+      <div className="max-w-lg mx-auto px-4">
         <h1 className="font-semibold text-2xl leading-none tracking-normal text-slate-600 text-center mb-4">
           Shopping List
         </h1>
@@ -41,7 +44,10 @@ const Products: React.FC = () => {
               key={product.id}
               product={product}
               index={index}
-              onEdit={() => setIsBottomSheetOpen(true)}
+              onEdit={() => {
+                setSelectedProductId(product.id);
+                setIsBottomSheetOpen(true);
+              }}
             />
           ))}
 
@@ -55,7 +61,10 @@ const Products: React.FC = () => {
 
         <button
           className="w-full mt-6 flex items-center justify-center gap-2 p-4 text-orange-500 rounded-lg bg-transparent border-0 outline-none"
-          onClick={() => setIsBottomSheetOpen(true)}
+          onClick={() => {
+            setSelectedProductId(null);
+            setIsBottomSheetOpen(true);
+          }}
         >
           <Icon.Plus className="w-5 h-5" />
           <span className="text-xl">Add Product</span>
@@ -64,7 +73,11 @@ const Products: React.FC = () => {
 
       <ProductForm
         isOpen={isBottomSheetOpen}
-        onClose={() => setIsBottomSheetOpen(false)}
+        onClose={() => {
+          setIsBottomSheetOpen(false);
+          setSelectedProductId(null);
+        }}
+        productId={selectedProductId}
       />
     </div>
   );
