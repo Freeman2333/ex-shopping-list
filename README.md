@@ -1,73 +1,113 @@
-# React + TypeScript + Vite
+# Shopping List
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A shopping list application built with React, TypeScript, and Redux Toolkit.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React 19 + TypeScript
+- Vite
+- Redux Toolkit & RTK Query
+- Tailwind CSS 4
+- React Hook Form + Yup
+- React Router v7
 
-## React Compiler
+## Prerequisites
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Node.js 18.x or higher
+- npm 9.x or higher
 
-## Expanding the ESLint configuration
+## Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Backend Setup
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+1. Clone and set up the server repository:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+git clone https://github.com/ofek-exco/shopping-list-api
+cd shopping-list-api
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Change the server port to 3003 in the server configuration file.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+3. Fix CORS issues by adding the following to the server:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```javascript
+// Add CORS middleware to allow requests from the frontend
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  }),
+);
+```
+
+4. Start the server:
+
+```bash
+npm start
+```
+
+### Frontend Setup
+
+1. Clone the repository and install dependencies:
+
+```bash
+git clone <repository-url>
+cd shopping-list
+npm install
+```
+
+2. (Optional) Configure environment variables by creating a `.env` file:
+
+```env
+VITE_API_URL=http://localhost:3003
+```
+
+## Running the Application
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+The app will be available at `http://localhost:5173`
+
+Other commands:
+
+```bash
+npm run build    # Build for production
+npm run preview  # Preview production build
+npm run lint     # Run ESLint
+```
+
+## API Integration
+
+The app expects a REST API with the following endpoints:
+
+- `GET /api/items` - Get all products
+- `GET /api/items/:id` - Get a product by ID
+- `POST /api/items` - Create a new product
+- `PUT /api/items/:id` - Update a product
+- `DELETE /api/items/:id` - Delete a product
+
+Expected response format:
+
+```json
+// GET /api/items
+{ "items": [{ "id": 1, "name": "Product", "quantity": 2, "purchased": false }] }
+
+// GET /api/items/:id
+{ "item": { "id": 1, "name": "Product", "quantity": 2, "purchased": false } }
+```
+
+## Project Structure
+
+```
+src/
+├── components/       # Reusable components
+├── pages/           # Page components
+├── redux/           # Store and API services
+├── schemas/         # Validation schemas
+└── types/           # TypeScript types
 ```
