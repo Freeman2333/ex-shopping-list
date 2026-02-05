@@ -29,7 +29,9 @@ const Products: React.FC = () => {
     );
   }
 
-  const total = products.reduce((sum, product) => sum + product.price, 0);
+  const total = products
+    .filter((product) => !product.isCompleted)
+    .reduce((sum, product) => sum + product.price, 0);
 
   return (
     <div className="min-h-screen py-8">

@@ -48,6 +48,25 @@ export const mainApi = createApi({
       },
       invalidatesTags: (result, error, { id }) => [{ type: "Product", id }],
     }),
+    toggleProductComplete: builder.mutation<void, number>({
+      queryFn: () => ({ data: undefined }),
+      async onQueryStarted(productId, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          mainApi.util.updateQueryData("getProducts", undefined, (draft) => {
+            const product = draft.find((p) => p.id === productId);
+            if (product) {
+              product.isCompleted = !product.isCompleted;
+            }
+          }),
+        );
+
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
+    }),
   }),
 });
 
@@ -55,4 +74,5 @@ export const {
   useGetProductsQuery,
   useGetProductQuery,
   useUpdateProductMutation,
+  useToggleProductCompleteMutation,
 } = mainApi;

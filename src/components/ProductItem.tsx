@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import type { Product } from "../types/product";
 import Icon from "../assets/icons.tsx";
 import { Link } from "react-router-dom";
+import { useToggleProductCompleteMutation } from "../redux/services/mainApi";
 
 interface ProductItemProps {
   product: Product;
@@ -14,20 +15,20 @@ const ProductItem: React.FC<ProductItemProps> = ({
   index,
   onEdit,
 }) => {
-  const [isDeleted, setIsDeleted] = useState(false);
+  const [toggleComplete] = useToggleProductCompleteMutation();
 
   const handleDelete = () => {
-    setIsDeleted(true);
+    toggleComplete(product.id);
   };
 
   return (
     <div
-      className={`flex items-center justify-between p-4 border-b border-gray-200 bg-white ${isDeleted ? "opacity-60" : ""}`}
+      className={`flex items-center justify-between p-4 border-b border-gray-200 bg-white ${product.isCompleted ? "opacity-60" : ""}`}
     >
       <div className="flex items-center gap-4">
         <span className="text-xl font-bold text-orange-400">{index + 1}</span>
         <div>
-          {isDeleted ? (
+          {product.isCompleted ? (
             <h3 className="text-md font-normal leading-none tracking-normal text-slate-600 mr-4 line-through cursor-default">
               {product.name}
             </h3>
@@ -42,20 +43,20 @@ const ProductItem: React.FC<ProductItemProps> = ({
       </div>
       <div className="flex items-center gap-2">
         <span
-          className={`text-md font-normal leading-none tracking-normal text-slate-600 ${isDeleted ? "line-through" : ""}`}
+          className={`text-md font-normal leading-none tracking-normal text-slate-600 ${product.isCompleted ? "line-through" : ""}`}
         >
           {product.price} NIS
         </span>
         <div className="flex gap-1">
           <button
-            disabled={isDeleted}
+            disabled={product.isCompleted}
             className="p-1 text-gray-400 bg-transparent border-0 outline-none"
             onClick={onEdit}
           >
             <Icon.Edit />
           </button>
           <button
-            disabled={isDeleted}
+            disabled={product.isCompleted}
             className="p-1 text-gray-400 bg-transparent border-0 outline-none"
             onClick={handleDelete}
           >
