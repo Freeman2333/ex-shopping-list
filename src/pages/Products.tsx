@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useGetProductsQuery } from "../redux/services/mainApi";
 import ProductItem from "../components/ProductItem";
-import BottomSheet from "../components/ui/BottomSheet";
+import ProductForm from "../components/ProductForm";
 import Icon from "../assets/icons.tsx";
 
 const Products: React.FC = () => {
@@ -62,12 +62,10 @@ const Products: React.FC = () => {
         </button>
       </div>
 
-      <BottomSheet
+      <ProductForm
         isOpen={isBottomSheetOpen}
         onClose={() => setIsBottomSheetOpen(false)}
-      >
-        sdasdsa
-      </BottomSheet>
+      />
     </div>
   );
 };
