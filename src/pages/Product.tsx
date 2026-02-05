@@ -5,6 +5,7 @@ import Icon from "../assets/icons.tsx";
 const Product: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+
   const { data: product, isLoading, error } = useGetProductQuery(Number(id));
 
   if (isLoading) {
