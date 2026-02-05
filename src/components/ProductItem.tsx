@@ -6,9 +6,14 @@ import { Link } from "react-router-dom";
 interface ProductItemProps {
   product: Product;
   index: number;
+  onEdit?: () => void;
 }
 
-const ProductItem: React.FC<ProductItemProps> = ({ product, index }) => {
+const ProductItem: React.FC<ProductItemProps> = ({
+  product,
+  index,
+  onEdit,
+}) => {
   const [isDeleted, setIsDeleted] = useState(false);
 
   const handleDelete = () => {
@@ -45,6 +50,7 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, index }) => {
           <button
             disabled={isDeleted}
             className="p-1 text-gray-400 bg-transparent border-0 outline-none"
+            onClick={onEdit}
           >
             <Icon.Edit />
           </button>

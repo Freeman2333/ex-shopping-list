@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { useGetProductsQuery } from "../redux/services/mainApi";
 import ProductItem from "../components/ProductItem";
+import BottomSheet from "../components/ui/BottomSheet";
 import Icon from "../assets/icons.tsx";
 
 const Products: React.FC = () => {
   const { data: products = [], isLoading, error } = useGetProductsQuery();
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
   if (isLoading) {
     return (
@@ -34,7 +37,12 @@ const Products: React.FC = () => {
 
         <div className="bg-white rounded-lg overflow-hidden">
           {products.map((product, index) => (
-            <ProductItem key={product.id} product={product} index={index} />
+            <ProductItem
+              key={product.id}
+              product={product}
+              index={index}
+              onEdit={() => setIsBottomSheetOpen(true)}
+            />
           ))}
 
           <div className="flex items-center justify-between p-4 bg-gray-50 border-t">
@@ -45,11 +53,21 @@ const Products: React.FC = () => {
           </div>
         </div>
 
-        <button className="w-full mt-6 flex items-center justify-center gap-2 p-4 text-orange-500 rounded-lg bg-transparent border-0 outline-none">
+        <button
+          className="w-full mt-6 flex items-center justify-center gap-2 p-4 text-orange-500 rounded-lg bg-transparent border-0 outline-none"
+          onClick={() => setIsBottomSheetOpen(true)}
+        >
           <Icon.Plus className="w-5 h-5" />
           <span className="text-xl">Add Product</span>
         </button>
       </div>
+
+      <BottomSheet
+        isOpen={isBottomSheetOpen}
+        onClose={() => setIsBottomSheetOpen(false)}
+      >
+        sdasdsa
+      </BottomSheet>
     </div>
   );
 };
