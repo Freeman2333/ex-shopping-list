@@ -2,7 +2,6 @@ import { Suspense, lazy } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "./App.css";
 
 const Products = lazy(() => import("./pages/Products"));
 const Product = lazy(() => import("./pages/Product"));
