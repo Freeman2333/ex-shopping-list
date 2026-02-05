@@ -48,6 +48,17 @@ export const mainApi = createApi({
       },
       invalidatesTags: (result, error, { id }) => [{ type: "Product", id }],
     }),
+    createProduct: builder.mutation<
+      Product,
+      Omit<Product, "id" | "isCompleted">
+    >({
+      query: (newProduct) => ({
+        url: `/items`,
+        method: "POST",
+        body: newProduct,
+      }),
+      invalidatesTags: [{ type: "Products", id: "LIST" }],
+    }),
     toggleProductComplete: builder.mutation<void, number>({
       queryFn: () => ({ data: undefined }),
       async onQueryStarted(productId, { dispatch, queryFulfilled }) {
@@ -74,5 +85,6 @@ export const {
   useGetProductsQuery,
   useGetProductQuery,
   useUpdateProductMutation,
+  useCreateProductMutation,
   useToggleProductCompleteMutation,
 } = mainApi;

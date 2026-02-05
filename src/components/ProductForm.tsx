@@ -9,6 +9,7 @@ import { productSchema, type ProductFormData } from "../schemas/productSchema";
 import {
   useGetProductQuery,
   useUpdateProductMutation,
+  useCreateProductMutation,
 } from "../redux/services/mainApi";
 
 interface ProductFormProps {
@@ -27,6 +28,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
   });
 
   const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
+  const [createProduct, { isLoading: isCreating }] = useCreateProductMutation();
 
   const {
     control,
@@ -63,8 +65,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
 
         toast.success("Product updated successfully");
       } else {
-        // Create new product (TODO: add createProduct mutation)
-        console.log("Creating new product:", data);
+        await createProduct(data).unwrap();
         toast.success("Product created successfully");
       }
 
@@ -135,14 +136,14 @@ const ProductForm: React.FC<ProductFormProps> = ({
           <div className="flex justify-end">
             <button
               type="submit"
-              disabled={isUpdating}
+              disabled={isUpdating || isCreating}
               className={`px-6 py-2 rounded-md font-medium focus:outline-none transition-colors flex items-center justify-center ${
-                isUpdating
+                isUpdating || isCreating
                   ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                   : "bg-white text-orange-500 hover:bg-orange-50"
               }`}
             >
-              {isUpdating ? (
+              {isUpdating || isCreating ? (
                 <div className="w-5 h-5 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
               ) : (
                 <Icon.Arrow />

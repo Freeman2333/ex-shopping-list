@@ -73,14 +73,16 @@ const Products: React.FC = () => {
         </button>
       </div>
 
-      <ProductForm
-        isOpen={isBottomSheetOpen}
-        onClose={() => {
-          setIsBottomSheetOpen(false);
-          setSelectedProductId(null);
-        }}
-        productId={selectedProductId}
-      />
+      {isBottomSheetOpen && (
+        <ProductForm
+          isOpen={isBottomSheetOpen}
+          onClose={() => {
+            setIsBottomSheetOpen(false);
+            setSelectedProductId(null);
+          }}
+          productId={selectedProductId}
+        />
+      )}
     </div>
   );
 };
