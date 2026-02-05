@@ -52,8 +52,8 @@ npm start
 1. Clone the repository and install dependencies:
 
 ```bash
-git clone <repository-url>
-cd shopping-list
+git clone https://github.com/Freeman2333/ex-shopping-list
+cd ex-shopping-list
 npm install
 ```
 
