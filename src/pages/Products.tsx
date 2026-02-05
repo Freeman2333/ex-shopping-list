@@ -6,6 +6,7 @@ import Icon from "../assets/icons.tsx";
 
 const Products: React.FC = () => {
   const { data: products = [], isLoading, error } = useGetProductsQuery();
+
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState<number | null>(
     null,
