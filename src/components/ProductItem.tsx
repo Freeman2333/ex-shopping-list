@@ -1,6 +1,6 @@
 import React from "react";
 import type { Product } from "../types/product";
-import Icon from "../assets/icons.tsx";
+import Icon from "./ui/Icons.tsx";
 import { Link } from "react-router-dom";
 import { useToggleProductCompleteMutation } from "../redux/services/mainApi";
 

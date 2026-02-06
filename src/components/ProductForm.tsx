@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
 import BottomSheet from "./ui/BottomSheet";
 import Input from "./ui/Input";
-import Icon from "../assets/icons.tsx";
+import Icon from "./ui/Icons.tsx";
 import { productSchema, type ProductFormData } from "../schemas/productSchema";
 import {
   useGetProductQuery,

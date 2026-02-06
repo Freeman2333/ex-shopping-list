@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useGetProductQuery } from "../redux/services/mainApi";
-import Icon from "../assets/icons.tsx";
+import Icon from "../components/ui/Icons.tsx";
 
 const Product: React.FC = () => {
   const { id } = useParams<{ id: string }>();

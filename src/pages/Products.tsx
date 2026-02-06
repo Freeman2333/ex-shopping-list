@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useGetProductsQuery } from "../redux/services/mainApi";
 import ProductItem from "../components/ProductItem";
 import ProductForm from "../components/ProductForm";
-import Icon from "../assets/icons.tsx";
+import Icon from "../components/ui/Icons.tsx";
 
 const Products: React.FC = () => {
   const { data: products = [], isLoading, error } = useGetProductsQuery();

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Icon from "../../assets/icons.tsx";
+import Icon from "./Icons.tsx";
 
 interface BottomSheetProps {
   isOpen: boolean;
